@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * This method is used to get all employees.
      *
-     * @return List of employees.
+     * @return List of employees
      */
     @Override
     public List<Employee> getAllEmployees() {
@@ -37,9 +37,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-            * This method is used to get employee by id.
-            *
-            * @return Employee object.
+     * This method is used to get employee by id.
+     * @param id
+     * @return Employee object
      */
     @Override
     public Employee getEmployeeById(Long id) {
@@ -55,23 +55,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * This method is used to create employee.
-     *
-     * @return Employee object.
+     * @param employee
+     * @return Employee object
      */
     @Override
     public Employee createEmployee(Employee employee) {
         logger.info("Inside createEmployee method :: start");
 
-        Employee updatedEmployee=employeeDao.createEmployee(employee);
+        Employee createdEmployee=employeeDao.createEmployee(employee);
 
         logger.info("Inside createEmployee method :: end");
-        return updatedEmployee;
+        return createdEmployee;
     }
 
     /**
      * This method is used to update employee.
-     *
-     * @return Employee object.
+     * @param id
+     * @param employee
+     * @return Employee object
      */
     @Override
     public Employee updateEmployee(Long id,Employee employee) {
@@ -85,8 +86,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * This method is used to delete employee.
-     *
-     * @return Employee object.
+     * @param id
+     * @return boolean variable
      */
     @Override
     public boolean deleteEmployee(Long id) {

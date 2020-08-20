@@ -22,6 +22,11 @@ public class EmployeeSearchController {
     @Autowired
     EmployeeServiceProxy employeeServiceProxy;
 
+    /**
+     * This method is used to search employee by id.
+     * @param id
+     * @return ResponseEntity of EmployeeInfo.
+     */
     @GetMapping("/search-employee/{id}")
     @HystrixCommand(fallbackMethod= "defaultResponse",ignoreExceptions = {FeignException.class},commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000")})
@@ -36,12 +41,17 @@ public class EmployeeSearchController {
         return employeeInfo;
     }
 
+    /**
+     * This method is a fallback method and displays the default response.
+     * @param id
+     * @return ResponseEntity of error string
+     */
     public ResponseEntity defaultResponse(Long id){
         logger.info("Inside defaultResponse method :: start ");
 
         String err = "Fallback error as the microservice is down.";
 
-        logger.info("Inside defaultResponse method :: start ");
+        logger.info("Inside defaultResponse method :: end ");
         return new ResponseEntity(err, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

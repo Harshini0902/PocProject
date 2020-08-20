@@ -23,7 +23,7 @@ public class EmployeeDao {
     /**
      * This method is used to get all employees.
      *
-     * @return List of Employees.
+     * @return List of Employees
      */
     public List<Employee> getAllEmployees() {
 
@@ -31,68 +31,66 @@ public class EmployeeDao {
 
         List<Employee> employeeList = employeeRepository.findAll();
 
-        logger.info("Inside getAllEmployees method :: start");
+        logger.info("Inside getAllEmployees method :: end");
         return employeeList;
 
     }
 
     /**
      * This method is used to get employee by id.
-     *
+     * @param id
      * @return Employee object.
      */
     public Employee getEmployeeById(Long id) {
-
         logger.info("Inside getEmployeeById method :: start");
+
         Employee employee=null;
+
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
 
-        logger.info("Inside getEmployeeById method :: end");
         if(employeeOptional.isPresent()){
             employee= employeeOptional.get();
         }
 
+        logger.info("Inside getEmployeeById method :: end");
         return employee;
     }
 
     /**
      * This method is used to create employee.
-     *
+     * @param employee
      * @return Employee object.
      */
     public Employee createEmployee(Employee employee) {
         logger.info("Inside createEmployee method :: start");
 
+        Employee createdEmployee=null;
+
         boolean exists = employeeRepository.existsById(employee.getId());
-        Employee updatedEmployee=null;
 
         if (!exists) {
-            updatedEmployee = employeeRepository.save(employee);
+            createdEmployee = employeeRepository.save(employee);
 
         }
+
         logger.info("Inside createEmployee method :: end");
-        return updatedEmployee;
+        return createdEmployee;
     }
 
     /**
      * This method is used to update employee.
-     *
+     * @param id
+     * @param employee
      * @return Employee object.
      */
     public Employee updateEmployee(Long id,Employee employee) {
         logger.info("Inside updateEmployee method :: start");
+
         Employee updatedEmployee=null;
 
         Optional<Employee> optionalEmployee=employeeRepository.findById(id);
 
-
         if(optionalEmployee.isPresent()){
-//            Employee employeeToBeUpdated=optionalEmployee.get();
-//            employeeToBeUpdated.setFirstName(employee.getFirstName());
-//            employeeToBeUpdated.setLastName(employee.getLastName());
-//            employeeToBeUpdated.setDesignation(employee.getDesignation());
-//            employeeToBeUpdated.setEmailId(employee.getEmailId());
-//            employeeToBeUpdated.setMobileNumber(employee.getMobileNumber());
             employee.setId(id);
             updatedEmployee=employeeRepository.save(employee);
 
@@ -100,24 +98,25 @@ public class EmployeeDao {
 
         logger.info("Inside updateEmployee method :: end");
         return updatedEmployee;
-
     }
 
     /**
      * This method is used to delete employee.
-     *
-     * @return Employee object.
+     * @param id
+     * @return boolean variable
      */
     public boolean deleteEmployee(Long id) {
-       boolean deleted=false;
         logger.info("Inside deleteEmployee method :: start");
+
+        boolean deleted=false;
         boolean found=employeeRepository.existsById(id);
+
         if(found) {
             employeeRepository.deleteById(id);
              deleted=true;
         }
-        logger.info("Inside updateEmployee method :: start");
 
+        logger.info("Inside updateEmployee method :: end");
         return deleted;
 
     }

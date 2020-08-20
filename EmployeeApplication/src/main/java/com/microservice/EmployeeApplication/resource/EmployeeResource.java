@@ -24,9 +24,9 @@ public class EmployeeResource {
     private EmployeeService employeeService;
 
     /**
-     * This method is used to fetch all employees.
+     * This method is used to get all employees.
      *
-     * @return ResponseEntity List of employees
+     * @return ResponseEntity of employees
      */
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAllEmployees() {
@@ -39,9 +39,9 @@ public class EmployeeResource {
     }
 
     /**
-     * This method is used to fetch employee by id.
-     *
-     * @return ResponseEntity of employee
+     * This method is used to get employee by id.
+     * @param id
+     * @return
      */
     @GetMapping("/employees/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
@@ -59,31 +59,33 @@ public class EmployeeResource {
 
     /**
      * This method is used to create employee.
-     *
-     * @return ResponseEntity with updated object and created status.
+     * @param employee
+     * @return ResponseEntity with updated object and created status
      */
     @PostMapping("/employees")
     public ResponseEntity createEmployee(@RequestBody Employee employee) {
-        logger.info("Inside getEmployeeById method :: start");
+        logger.info("Inside createEmployee method :: start");
 
         if (employee.getId() == null) {
-            logger.info("Inside getEmployeeById method :: end");
-            return new ResponseEntity("Please provide id in the request body", HttpStatus.BAD_REQUEST);
+            logger.info("Inside createEmployee method :: end");
+            return new ResponseEntity("Please provide id in the request body.", HttpStatus.BAD_REQUEST);
         } else {
-            Employee updatedEmployee = employeeService.createEmployee(employee);
+            Employee createdEmployee = employeeService.createEmployee(employee);
 
-            if (updatedEmployee == null) {
+            if (createdEmployee == null) {
                 throw new ExistingEmployeeException("Employee with id " + employee.getId() + " already exists");
             }
 
-            logger.info("Inside getEmployeeById method :: end");
-            return new ResponseEntity<Employee>(updatedEmployee, HttpStatus.CREATED);
+            logger.info("Inside createEmployee method :: end");
+            return new ResponseEntity<Employee>(createdEmployee, HttpStatus.CREATED);
         }
     }
+
     /**
      * This method is used to update employee.
-     *
-     * @return ResponseEntity with updated object.
+     * @param id
+     * @param employee
+     * @return ResponseEntity of updated Employee object
      */
     @PutMapping("/employees/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id,@RequestBody Employee employee) {
@@ -93,7 +95,7 @@ public class EmployeeResource {
         Employee updatedEmployee = employeeService.updateEmployee(id,employee);
 
         if(updatedEmployee ==  null){
-            throw  new EmployeeNotFoundException("Employee with id " + employee.getId() + " not found");
+            throw  new EmployeeNotFoundException("Employee with id " + id + " not found");
         }
 
         logger.info("Inside updateEmployee method :: end");
@@ -102,8 +104,8 @@ public class EmployeeResource {
 
     /**
      * This method is used to delete employee.
-     *
-     * @return ResponseEntity with updated object.
+     * @param id
+     * @return ResponseEntity with success string
      */
     @DeleteMapping("/employees/{id}")
     public ResponseEntity<Employee> deleteEmployee(@PathVariable("id") Long id) {
